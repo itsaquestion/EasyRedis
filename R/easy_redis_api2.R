@@ -1,7 +1,8 @@
 
 getHost = function(host = NULL) {
 	host = host %||% getEnv("Redis_host")
-	if(is.null(host)){stop("Unknow host")}
+	if (is.null(host)) { stop("Unknow host") }
+	host
 }
 
 getpassword = function(password = NULL) {

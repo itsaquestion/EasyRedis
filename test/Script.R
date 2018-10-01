@@ -12,3 +12,6 @@ er$qset(x)
 er$get("x")
 
 er$qget(yy)
+
+
+er = EasyRedis::init()
