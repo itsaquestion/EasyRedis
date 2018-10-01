@@ -7,7 +7,7 @@ er$get("yy")
 
 er$set("x",NULL)
 
-x = "apple"
+x = "123"
 er$qset(x)
 er$get("x")
 

@@ -17,12 +17,12 @@ getEnv = function(x) {
 	ret
 }
 
-checkServer <- function(host = NULL, port = 6379) {
-	# 测试服务器的可连接性和redis登陆
+checkHost <- function(host = NULL, port = 6379) {
+	# 测试服务器的可连接性
 
+	# 预防连接不佳，尝试Ping 3次
 	ping = ping_port(host, port, count = 1)
 	counter = 1
-
 	while (is.na(ping) & counter < 3) {
 		ping = ping_port(host, port, count = 1)
 		counter = counter + 1
@@ -36,8 +36,13 @@ checkServer <- function(host = NULL, port = 6379) {
 
 
 checkRedis = function(redis_host, redis_port, redis_password) {
+	rConnect(redis_host, redis_port, redis_password)
+	redisClose()
+}
+
+rConnect = function(redis_host, redis_port, redis_password) {
 	# redisConnect遇到“需要密码，但是没提供”这种情况，
-	# 不会stop，而只是print个信息，所以只能捕获这个信息
+	# 不会stop，指挥print个信息，所以只能捕获这个信息
 
 	msg = NULL
 	tryCatch({
@@ -53,7 +58,6 @@ checkRedis = function(redis_host, redis_port, redis_password) {
 		stop("Redis: password required.")
 	}
 
-	redisClose()
 }
 
 
@@ -84,14 +88,14 @@ init = function(host = NULL, port = 6379, password = NULL) {
 	redis_port = port
 	redis_password = getpassword(password)
 
-	checkServer(redis_host, redis_port)
+	checkHost(redis_host, redis_port)
 
 	checkRedis(redis_host, redis_port, redis_password)
 
 
 	set = function(key, value) {
 		# set 一个对象
-		redisConnect(redis_host, redis_port, redis_password)
+		rConnect(redis_host, redis_port, redis_password)
 		redisSet(key, value)
 		redisClose()
 	}
@@ -99,7 +103,7 @@ init = function(host = NULL, port = 6379, password = NULL) {
 	get = function(key) {
 		# get 一个对象
 		#key = deparse(substitute(x))
-		redisConnect(redis_host, redis_port, redis_password)
+		rConnect(redis_host, redis_port, redis_password)
 		ret = redisGet(key)
 		redisClose()
 		ret
@@ -107,7 +111,13 @@ init = function(host = NULL, port = 6379, password = NULL) {
 
 	qset = function(x, key = NULL) {
 		# set 一个对象，不指定key，就用变量名当key
-		key = key %||% deparse(substitute(x))
+		obj_name = deparse(substitute(x))
+
+		#if (missing(x)) {
+			#stop(glue("{obj_name} is missing."))
+		#}
+
+		key = key %||% obj_name
 		set(key, x)
 	}
 
