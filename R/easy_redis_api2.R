@@ -21,9 +21,15 @@ checkServer <- function(host = NULL, port = 6379) {
 	# 测试服务器的可连接性和redis登陆
 
 	ping = ping_port(host, port, count = 1)
+	counter = 1
+
+	while (is.na(ping) & counter < 3) {
+		ping = ping_port(host, port, count = 1)
+		counter = counter + 1
+	}
 
 	if (is.na(ping)) {
-		stop(glue("Connect to \"{host}:{port}\" failed! Check the host and port."))
+		stop(glue("Connect to \"{host}:{port}\" failed! Check the port."))
 	}
 
 }
