@@ -23,12 +23,33 @@ checkServer <- function(host = NULL, port = 6379) {
 	ping = ping_port(host, port, count = 1)
 
 	if (is.na(ping)) {
-		#warning(glue("Connect to \"{host}:{port}\" failed Check the host and port"))
-		return(F)
+		stop(glue("Connect to \"{host}:{port}\" failed! Check the host and port."))
 	}
 
-	TRUE
 }
+
+
+checkRedis = function(redis_host, redis_port, redis_password) {
+	# redisConnect遇到“需要密码，但是没提供”这种情况，
+	# 不会stop，而只是print个信息，所以只能捕获这个信息
+
+	msg = NULL
+	tryCatch({
+		msg = capture.output({
+			redisConnect(host = redis_host, port = redis_port, password = redis_password)
+		})
+	}, error = function(e) {
+		# "密码错"，则会正常stop
+		stop("Invalid connection! Host and port is OK, check password.")
+	})
+
+	if (any(grepl("NOAUTH", msg))) {
+		stop("Redis: password required.")
+	}
+
+	redisClose()
+}
+
 
 #' init a EasyRedis object
 #'
@@ -57,20 +78,9 @@ init = function(host = NULL, port = 6379, password = NULL) {
 	redis_port = port
 	redis_password = getpassword(password)
 
+	checkServer(redis_host, redis_port)
 
-	if (!checkServer(redis_host, redis_port)) {
-		stop(glue("Connect to \"{host}:{port}\" failed! Check the host and port."))
-	}
-
-	tryCatch({
-		redisConnect(host = redis_host, port = redis_port, password = redis_password)
-	}, error = function(e) {
-		stop("Invalid connection! Host and port is OK, check password.")
-	})
-
-	redisClose()
-
-	init_ok = TRUE
+	checkRedis(redis_host, redis_port, redis_password)
 
 
 	set = function(key, value) {
@@ -102,7 +112,7 @@ init = function(host = NULL, port = 6379, password = NULL) {
 		env[[deparse(substitute(x))]] <- value
 	}
 
-	# 共有方法/接口 ====
+	# 接口 ====
 	ret = list(
 		set = set,
 		get = get,
