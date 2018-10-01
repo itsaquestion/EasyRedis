@@ -70,11 +70,6 @@ init = function(host = NULL, port = 6379, password = NULL) {
 
 	init_ok = TRUE
 
-	qset = function(x, key = NULL) {
-		# set 一个对象，不指定key，就用变量名当key
-		key = key %||% deparse(substitute(x))
-		set(key, x)
-	}
 
 	set = function(key, value) {
 		# set 一个对象
@@ -92,11 +87,25 @@ init = function(host = NULL, port = 6379, password = NULL) {
 		ret
 	}
 
+	qset = function(x, key = NULL) {
+		# set 一个对象，不指定key，就用变量名当key
+		key = key %||% deparse(substitute(x))
+		set(key, x)
+	}
+
+	qget = function(x, env = parent.frame()) {
+		# 直接赋值到caller的环境。
+		key = deparse(substitute(x))
+		value = get(key)
+		env[[deparse(substitute(x))]] <- value
+	}
+
 	# 共有方法/接口 ====
 	ret = list(
 		set = set,
 		get = get,
-		qset = qset
+		qset = qset,
+		qget = qget
 	 )
 
 	class(ret) = c("er",class(ret))
