@@ -18,8 +18,8 @@ system.time(
 	er$get("yy")
 )
 
-er = EasyRedis::init(host = "cn.imtass.me",password = "909090aA_")
+er = EasyRedis::init()
 er$get("yy")
 
 
-er = EasyRedis::init(host = "cn.imtass.me", password = "ads")
+er = EasyRedis::init()
