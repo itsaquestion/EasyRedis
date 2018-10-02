@@ -24,9 +24,9 @@ stopifnot(
 )
 er$del("tmp2")
 
-# end ====
+# key exist ====
 er$keys()
 
-
+er$get("asdf")
 
 
