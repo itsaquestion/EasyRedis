@@ -128,12 +128,20 @@ init = function(host = NULL, port = 6379, password = NULL) {
 		env[[deparse(substitute(x))]] <- value
 	}
 
+	keys = function() {
+		rConnect(redis_host, redis_port, redis_password)
+		ret = redisKeys()
+		redisClose()
+		ret
+	}
+
 	# 接口 ====
 	ret = list(
 		set = set,
 		get = get,
 		qset = qset,
-		qget = qget
+		qget = qget,
+		keys = keys
 	 )
 
 	class(ret) = c("er",class(ret))

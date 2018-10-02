@@ -3,7 +3,8 @@
 er = EasyRedis::init()
 
 er$get("yy")
-
+er$key()
+er$get("wind_check")
 
 er$set("x",NULL)
 
