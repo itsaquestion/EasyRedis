@@ -92,21 +92,23 @@ init = function(host = NULL, port = 6379, password = NULL) {
 
 	checkRedis(redis_host, redis_port, redis_password)
 
+	wrapper = function(fun) {
+		rConnect(redis_host, redis_port, redis_password)
+		ret = fun()
+		redisClose()
+		ret
+	}
 
 	set = function(key, value) {
 		# set 一个对象
-		rConnect(redis_host, redis_port, redis_password)
-		redisSet(key, value)
-		redisClose()
+		invisible(wrapper(function() { redisSet(key, value) }))
+
 	}
 
 	get = function(key) {
 		# get 一个对象
 		#key = deparse(substitute(x))
-		rConnect(redis_host, redis_port, redis_password)
-		ret = redisGet(key)
-		redisClose()
-		ret
+		wrapper(function() { redisGet(key) })
 	}
 
 	qset = function(x, key = NULL) {
@@ -129,10 +131,11 @@ init = function(host = NULL, port = 6379, password = NULL) {
 	}
 
 	keys = function() {
-		rConnect(redis_host, redis_port, redis_password)
-		ret = redisKeys()
-		redisClose()
-		ret
+		wrapper(function() { redisKeys() })
+	}
+
+	del = function(key) {
+		invisible(wrapper(function() { redisDelete(key) }))
 	}
 
 	# 接口 ====
@@ -141,7 +144,8 @@ init = function(host = NULL, port = 6379, password = NULL) {
 		get = get,
 		qset = qset,
 		qget = qget,
-		keys = keys
+		keys = keys,
+		del = del
 	 )
 
 	class(ret) = c("er",class(ret))
