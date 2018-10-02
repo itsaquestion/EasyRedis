@@ -132,8 +132,22 @@ init = function(host = NULL, port = 6379, password = NULL) {
 		wrapper(function() { redisKeys() })
 	}
 
-	del = function(key) {
-		invisible(wrapper(function() { redisDelete(key) }))
+	del = function(key, ask = T) {
+
+		do_del = F
+
+		if (ask) {
+			ans = menu(c("Yes", "No"), title = glue("Delete key \"{key}\"?"))
+			if (ans == 1) {
+				do_del = T
+			} 
+		} else {
+			do_del = T
+		}
+
+		if (do_del) {
+			invisible(wrapper(function() { redisDelete(key) }))
+		}
 	}
 
 	# 接口 ====
