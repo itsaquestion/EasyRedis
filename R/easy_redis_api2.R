@@ -101,7 +101,6 @@ init = function(host = NULL, port = 6379, password = NULL) {
 
 	set = function(key, value) {
 		# set 一个对象
-		
 		invisible(wrapper(function() { redisSet(key, value) }))
 	}
 
@@ -117,10 +116,6 @@ init = function(host = NULL, port = 6379, password = NULL) {
 	qset = function(x, key = NULL) {
 		# set 一个对象，不指定key，就用变量名当key
 		obj_name = deparse(substitute(x))
-
-		#if (missing(x)) {
-			#stop(glue("{obj_name} is missing."))
-		#}
 
 		key = key %||% obj_name
 		set(key, x)
@@ -151,7 +146,7 @@ init = function(host = NULL, port = 6379, password = NULL) {
 		del = del
 	 )
 
-	class(ret) = c("er",class(ret))
+	class(ret) = c("ER",class(ret))
 
 	ret
 }

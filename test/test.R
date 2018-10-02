@@ -27,6 +27,7 @@ er$del("tmp2")
 # key exist ====
 er$keys()
 
-er$get("asdf")
-
+stopifnot(
+	is.null( er$get("tmp"))
+)
 
