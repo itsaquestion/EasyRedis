@@ -11,7 +11,7 @@ import(pingr)
 export("init")
 export("set")
 export("get")
-export("qset")
+export("qSet")
 
 #===================
 
@@ -63,7 +63,7 @@ getEnv = function(x) {
 }
 
 
-qset = function(x) {
+qSet = function(x) {
 	checkInit()
 	key = key %||% deparse(substitute(x))
 	redisConnect(redis_host, redis_port, redis_password)

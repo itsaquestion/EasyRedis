@@ -15,12 +15,12 @@ stopifnot(
 )
 er$del("tmp",F)
 
-# qset and qget ====
+# qSet and qGet ====
 tmp2 = "abc"
-er$qset(tmp2)
+er$qSet(tmp2)
 er$keys()
 rm(tmp2)
-er$qget(tmp2)
+er$qGet(tmp2)
 
 stopifnot(
 	tmp2 == "abc"
@@ -34,3 +34,5 @@ stopifnot(
 	is.null( er$get("tmp"))
 )
 
+er$keys()
+er$get("wind_check")

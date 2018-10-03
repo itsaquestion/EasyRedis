@@ -77,7 +77,7 @@ rConnect = function(redis_host, redis_port, redis_password) {
 #' @examples
 #' er = EasyRedis::init()
 #' x = "apple"
-#' er$qset(x)
+#' er$qSet(x)
 #' er$get("x") # "apple"
 #'
 init = function(host = NULL, port = 6379, password = NULL) {
@@ -113,7 +113,7 @@ init = function(host = NULL, port = 6379, password = NULL) {
 		wrapper(function() { redisGet(key) })
 	}
 
-	qset = function(x, key = NULL) {
+	qSet = function(x, key = NULL) {
 		# set 一个对象，不指定key，就用变量名当key
 		obj_name = deparse(substitute(x))
 
@@ -121,7 +121,7 @@ init = function(host = NULL, port = 6379, password = NULL) {
 		set(key, x)
 	}
 
-	qget = function(x, env = parent.frame()) {
+	qGet = function(x, env = parent.frame()) {
 		# 直接赋值到caller的环境。
 		key = deparse(substitute(x))
 		value = get(key)
@@ -154,8 +154,8 @@ init = function(host = NULL, port = 6379, password = NULL) {
 	ret = list(
 		set = set,
 		get = get,
-		qset = qset,
-		qget = qget,
+		qSet = qSet,
+		qGet = qGet,
 		keys = keys,
 		del = del
 	 )
