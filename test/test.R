@@ -1,6 +1,10 @@
 #devtools::install()
+MyUtils::rmAll()
+
 
 er = EasyRedis::init()
+
+
 stopifnot(
 	"ER" %in% class(er)
 )

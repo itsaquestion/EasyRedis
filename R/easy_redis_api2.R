@@ -17,7 +17,7 @@ getEnv = function(x) {
 	ret
 }
 
-checkHost <- function(host = NULL, port = 6379) {
+checkHost = function(host = NULL, port = 6379) {
 	# 测试服务器的可连接性
 
 	# 预防连接不佳，尝试Ping 3次
@@ -36,6 +36,7 @@ checkHost <- function(host = NULL, port = 6379) {
 
 
 checkRedis = function(redis_host, redis_port, redis_password) {
+	stopNull()
 	rConnect(redis_host, redis_port, redis_password)
 	redisClose()
 }
@@ -43,6 +44,7 @@ checkRedis = function(redis_host, redis_port, redis_password) {
 rConnect = function(redis_host, redis_port, redis_password) {
 	# redisConnect遇到“需要密码，但是没提供”这种情况，
 	# 不会stop，指挥print个信息，所以只能捕获这个信息
+	stopNull()
 
 	msg = NULL
 	tryCatch({
@@ -72,6 +74,7 @@ rConnect = function(redis_host, redis_port, redis_password) {
 #' @import rredis
 #' @import glue
 #' @import pingr
+#' @import NullCheck
 #' @export
 #'
 #' @examples
@@ -101,10 +104,12 @@ init = function(host = NULL, port = 6379, password = NULL) {
 
 	set = function(key, value) {
 		# set 一个对象
+		stopNull()
 		invisible(wrapper(function() { redisSet(key, value) }))
 	}
 
 	get = function(key) {
+		stopNull()
 		# get 一个对象
 		if (!key %in% keys()) {
 			warning(glue("Key \"{key}\" not exists."))

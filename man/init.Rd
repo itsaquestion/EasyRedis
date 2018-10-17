@@ -18,7 +18,7 @@ init a EasyRedis object
 \examples{
 er = EasyRedis::init()
 x = "apple"
-er$qset(x)
+er$qSet(x)
 er$get("x") # "apple"
 
 }
