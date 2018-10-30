@@ -112,7 +112,7 @@ init = function(host = NULL, port = 6379, password = NULL) {
 		stopNull()
 		# get 一个对象
 		if (!key %in% keys()) {
-			warning(glue("Key \"{key}\" not exists."))
+			stop(glue("Key \"{key}\" not exists."))
 			return(NULL)
 		}
 		wrapper(function() { redisGet(key) })

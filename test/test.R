@@ -15,7 +15,7 @@ er$keys()
 # set and get ====
 er$set("tmp", 123)
 
-
+er$get("adfs")
 
 stopifnot(
 	er$get("tmp") == 123
@@ -38,7 +38,7 @@ er$del("tmp2",F)
 er$keys()
 
 stopifnot(
-	is.null( er$get("tmp"))
+	is.null(er$get("tmp"))
 )
 
 er$keys()
@@ -47,6 +47,9 @@ er$get("wind_check")
 
 er$set(NA, 123)
 er$set("tmp", NA)
+
+er$qGet(tmp)
+tmp
 
 er$set(NULL, 123)
 er$set(vector(), 123)
