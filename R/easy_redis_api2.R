@@ -104,7 +104,7 @@ init = function(host = NULL, port = 6379, password = NULL) {
 
 	set = function(key, value) {
 		# set 一个对象
-		stopNull()
+		stopNull(except = "value")
 		invisible(wrapper(function() { redisSet(key, value) }))
 	}
 

@@ -14,6 +14,9 @@ er$keys()
 
 # set and get ====
 er$set("tmp", 123)
+
+
+
 stopifnot(
 	er$get("tmp") == 123
 )
@@ -40,3 +43,10 @@ stopifnot(
 
 er$keys()
 er$get("wind_check")
+
+
+er$set(NA, 123)
+er$set("tmp", NA)
+
+er$set(NULL, 123)
+er$set(vector(), 123)
