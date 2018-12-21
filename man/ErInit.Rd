@@ -20,7 +20,7 @@ a EasyRedis object
 ErInit: init a EasyRedis object
 }
 \examples{
-er = EasyRedis::init()
+er = EasyRedis::ErInit()
 x = "apple"
 er$qSet(x)
 er$get("x") # "apple"

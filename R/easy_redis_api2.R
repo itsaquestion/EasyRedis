@@ -85,7 +85,7 @@ rConnect = function(redis_host, redis_port, redis_password) {
 #' @export
 #'
 #' @examples
-#' er = EasyRedis::init()
+#' er = EasyRedis::ErInit()
 #' x = "apple"
 #' er$qSet(x)
 #' er$get("x") # "apple"

@@ -10,5 +10,5 @@ er$set("SnowFor_done",TRUE)
 
 
 code = "AB2313AC"
-number = as.numeric(paste0(stringr::str_extract_all(code,"[\\d]")[[1]],collapse = ""))
+#number = as.numeric(paste0(stringr::str_extract_all(code,"[\\d]")[[1]],collapse = ""))
 
