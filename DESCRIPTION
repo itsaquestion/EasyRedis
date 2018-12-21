@@ -13,3 +13,4 @@ Imports:
 	pingr,
 	purrr,
 	rredis
+Suggests: testthat

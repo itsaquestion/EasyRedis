@@ -3,7 +3,12 @@ MyUtils::rmAll()
 
 
 er = EasyRedis::init()
+er$keys()
 
+host = EasyRedis::getEnv("redis_host")
+pwd = EasyRedis::getEnv("redis_password")
+
+er2 = EasyRedis::init(host=host,password = pwd)
 
 stopifnot(
 	"ER" %in% class(er)
@@ -13,9 +18,15 @@ stopifnot(
 er$keys()
 
 # set and get ====
-er$set("tmp", 123)
 
-er$get("adfs")
+
+er$get("tmp")
+
+
+ptm <- proc.time()
+er$get("tmp")
+proc.time() - ptm
+
 
 stopifnot(
 	er$get("tmp") == 123
@@ -53,3 +64,6 @@ tmp
 
 er$set(NULL, 123)
 er$set(vector(), 123)
+
+
+

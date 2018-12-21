@@ -4,7 +4,7 @@
 \alias{init}
 \title{init a EasyRedis object}
 \usage{
-init(host = NULL, port = 6379, password = NULL)
+init(host = "localhost", port = 6379, password = NULL)
 }
 \arguments{
 \item{password}{}

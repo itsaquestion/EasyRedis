@@ -1,14 +1,22 @@
 
-getHost = function(host = NULL) {
-	host = host %||% getEnv("Redis_host")
-	if (is.null(host)) { stop("Unknow host") }
-	host
-}
+# getHost = function(host = NULL) {
+# 	host = host %||% getEnv("Redis_host")
+# 	if (is.null(host)) { stop("Unknow host") }
+# 	host
+# }
+#
+# getpassword = function(password = NULL) {
+# 	password %||% getEnv("Redis_password")
+# }
 
-getpassword = function(password = NULL) {
-	password %||% getEnv("Redis_password")
-}
-
+#' getEnv get env value.
+#'
+#' @param x env value name
+#'
+#' @return the value. if value == "" then return NULL
+#' @export
+#'
+#' @examples
 getEnv = function(x) {
 	ret = Sys.getenv(x)
 	if (ret == "") {
@@ -36,7 +44,7 @@ checkHost = function(host = NULL, port = 6379) {
 
 
 checkRedis = function(redis_host, redis_port, redis_password) {
-	stopNull()
+  stopNull(except = "redis_password")
 	rConnect(redis_host, redis_port, redis_password)
 	redisClose()
 }
@@ -44,7 +52,7 @@ checkRedis = function(redis_host, redis_port, redis_password) {
 rConnect = function(redis_host, redis_port, redis_password) {
 	# redisConnect遇到“需要密码，但是没提供”这种情况，
 	# 不会stop，指挥print个信息，所以只能捕获这个信息
-	stopNull()
+	stopNull(except = "redis_password")
 
 	msg = NULL
 	tryCatch({
@@ -83,13 +91,13 @@ rConnect = function(redis_host, redis_port, redis_password) {
 #' er$qSet(x)
 #' er$get("x") # "apple"
 #'
-init = function(host = NULL, port = 6379, password = NULL) {
+init = function(host = "localhost", port = 6379, password = NULL) {
 	# 读写redis的简易OO结构
 
 	# 私有成员 ====
-	redis_host = getHost(host)
+	redis_host = host
 	redis_port = port
-	redis_password = getpassword(password)
+	redis_password = password
 
 	checkHost(redis_host, redis_port)
 
@@ -145,7 +153,7 @@ init = function(host = NULL, port = 6379, password = NULL) {
 			ans = menu(c("Yes", "No"), title = glue("Delete key \"{key}\"?"))
 			if (ans == 1) {
 				do_del = T
-			} 
+			}
 		} else {
 			do_del = T
 		}
