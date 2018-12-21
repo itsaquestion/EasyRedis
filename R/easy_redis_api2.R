@@ -16,7 +16,6 @@
 #' @return the value. if value == "" then return NULL
 #' @export
 #'
-#' @examples
 getEnv = function(x) {
 	ret = Sys.getenv(x)
 	if (ret == "") {
@@ -71,11 +70,11 @@ rConnect = function(redis_host, redis_port, redis_password) {
 }
 
 
-#' init a EasyRedis object
+#' ErInit: init a EasyRedis object
 #'
-#' @param host
-#' @param port
-#' @param password
+#' @param host redis host.
+#' @param port redis port
+#' @param password redis password
 #'
 #' @return a EasyRedis object
 #' @import purrr
@@ -91,7 +90,7 @@ rConnect = function(redis_host, redis_port, redis_password) {
 #' er$qSet(x)
 #' er$get("x") # "apple"
 #'
-init = function(host = "localhost", port = 6379, password = NULL) {
+ErInit = function(host = "localhost", port = 6379, password = NULL) {
 	# 读写redis的简易OO结构
 
 	# 私有成员 ====

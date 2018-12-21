@@ -1,4 +1,4 @@
-er = EasyRedis::init()
+er = ErInit()
 er$set("SnowFor_done",FALSE)
 for(i in 1:100){
   er$set("SnowFor_check_time",Sys.time())
