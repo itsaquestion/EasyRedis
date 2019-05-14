@@ -42,13 +42,13 @@ checkHost = function(host = NULL, port = 6379) {
 }
 
 
-checkRedis = function(redis_host, redis_port, redis_password) {
+checkRedis = function(redis_host, redis_port, redis_password,no_deley) {
   stopNull(except = "redis_password")
-	rConnect(redis_host, redis_port, redis_password)
+	rConnect(redis_host, redis_port, redis_password, no_deley)
 	redisClose()
 }
 
-rConnect = function(redis_host, redis_port, redis_password) {
+rConnect = function(redis_host, redis_port, redis_password, no_deley) {
 	# redisConnect遇到“需要密码，但是没提供”这种情况，
 	# 不会stop，指挥print个信息，所以只能捕获这个信息
 	stopNull(except = "redis_password")
@@ -56,7 +56,8 @@ rConnect = function(redis_host, redis_port, redis_password) {
 	msg = NULL
 	tryCatch({
 		msg = capture.output({
-			redisConnect(host = redis_host, port = redis_port, password = redis_password)
+			redisConnect(host = redis_host, port = redis_port, password = redis_password,
+			             nodelay = no_deley)
 		})
 	}, error = function(e) {
 		# "密码错"，则会正常stop
@@ -90,20 +91,21 @@ rConnect = function(redis_host, redis_port, redis_password) {
 #' er$qSet(x)
 #' er$get("x") # "apple"
 #'
-ErInit = function(host = "localhost", port = 6379, password = NULL) {
+ErInit = function(host = "localhost", port = 6379, password = NULL,no_deley = F) {
 	# 读写redis的简易OO结构
 
 	# 私有成员 ====
 	redis_host = host
 	redis_port = port
 	redis_password = password
+	redis_nodeley = no_deley
 
 	checkHost(redis_host, redis_port)
 
-	checkRedis(redis_host, redis_port, redis_password)
+	checkRedis(redis_host, redis_port, redis_password,redis_nodeley)
 
 	wrapper = function(fun) {
-		rConnect(redis_host, redis_port, redis_password)
+		rConnect(redis_host, redis_port, redis_password,redis_nodeley)
 		ret = fun()
 		redisClose()
 		ret

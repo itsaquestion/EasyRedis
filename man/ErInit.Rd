@@ -4,7 +4,8 @@
 \alias{ErInit}
 \title{ErInit: init a EasyRedis object}
 \usage{
-ErInit(host = "localhost", port = 6379, password = NULL)
+ErInit(host = "localhost", port = 6379, password = NULL,
+  no_deley = F)
 }
 \arguments{
 \item{host}{redis host.}
